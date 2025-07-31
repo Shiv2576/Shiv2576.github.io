@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title> Shivang Dixit </title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.0s, color 0.5s;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+            color: #2f2222;
+            line-height: 1.6;
+            background-color: #cacaca;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #1E1E1E;
+            color: #ffffff;
+        }
+        
+        body.dark-mode .sidebar {
+            background-color: #1E1E1E;
+        }
+        
+        body.dark-mode .content {
+            background-color: #1E1E1E;
+        }
+        
+        body.dark-mode h1, 
+        body.dark-mode h2, 
+        body.dark-mode h3 {
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode a {
+            color: #4CA6FF;
+        }
+        
+        body.dark-mode .social-icon {
+            fill: #e0e0e0;
+        }
+        
+        body.dark-mode .social-icon:hover {
+            fill: #4CA6FF;
+        }
+        
+        /* Dark mode toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 24px;
+        }
+        
+        /* Existing styles remain the same */
+        .sidebar {
+            margin-left: -20%;
+            width: 40%;
+            max-width: 400px;
+            background-color: #cacaca;
+            padding: 90px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            left: 50%;
+            transform: translateX(-100%);
+        }
+        
+        .sidebar h1 {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar p {
+            margin-bottom: 15px;
+        }
+        
+        /* Main content - scrollable */
+        .content {
+            width: 100%;
+            max-width: 800px;
+            padding: 100px;
+            min-height: 100vh;
+            margin-left: 30%;
+            margin-right: 10%;
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 20px;
+            color: #4b4a4a;
+        }
+        
+        h2 {
+            margin-top: 30px;
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            margin-top: 25px;
+        }
+        
+        p {
+            margin-bottom: 20px;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        a {
+            color: #4686cf;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 400%;
+                height: 50%;
+                position: relative;
+                transform: none;
+                left: 35%;
+                padding: 20px;
+                max-width: 50%;
+            }
+            
+            .content {
+                margin-left: 0;
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .social-icon {
+            fill: #333;
+            width: 32px;
+            height: 32px;
+            transition: transform 0.3s ease, fill 0.5s ease;
+        }
+        
+        .github-icon:hover {
+            fill: #4686cf;
+            transform: scale(1.4);
+        }
+        
+        .twitter-icon:hover {
+            fill: #4686cf;
+            transform: scale(1.4);
+        }
+
+        .sun-icon {
+            transform: translateY(5px);
+            width: 25px;             /* Customize size */
+            height: 25px;
+            border: 4px solid rgb(60, 58, 58); /* Customize color */
+            border-radius: 50%;
+            box-sizing: border-box;
+            background-color: transparent;
+            display: inline-block;
+        }
+        
+        .moon-icon {
+            display: none;
+            color: white;
+         
+        }
+        
+        body.dark-mode .sun-icon {
+            display: none;
+          
+        }
+        
+        body.dark-mode .moon-icon {
+            display: block;
+            
+        }
+
+
+    </style>
+</head>
+<body>
+    <button class="dark-mode-toggle" aria-label="Toggle Dark Mode">
+        <span class="sun-icon"></span>
+        <span class="moon-icon">◉</span>
+    </button>
+
+    <div class="sidebar">
+        <h1><a href="">Shivang Dixit</a></h1>
+        <p>Bio</p>
+        <div class="social-links">
+            <a href="https://github.com/Shiv2576" title="View My GitHub Profile">
+              <svg class="social-icon github-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+            </a>
+            
+            <a href="https://twitter.com/Shiv_dixit2576" title="Follow me on X (Twitter)">
+              <svg class="social-icon twitter-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+
+        </div>
+    </div>
+    
+    <div class="content">
+        <h1 id="shivang-dixit--full-stack-engineer">About me !</h1>
+
+        <p>Not a frontend specialist, but I can efficiently build full-stack projects by breaking tasks into clear, functional units—especially with AI support. Having a frontend designer in the team is a bonus.</p>
+
+        <h2 id="technical-skills">Technical Skills</h2>
+        <ul>
+            <li><strong>Languages:</strong> Rust, GO, Solidity</li>
+
+            <li><strong>Chains:</strong> EVM, CosmWasm (Learning), SVM (Learning)</li>
+
+            <li><strong>Oracles:</strong> ChainLink (with certification) </li>
+
+            <li><strong>L2 - Rollups:</strong> ZK-sync, Optimism </li>
+
+            <li><strong>Databases:</strong> PostgreSQL, RocksDB</li>
+
+            <li><strong>Specialties:</strong> Distributed systems, High-Performance Computing, CryptoGraphy, Smart-Contracts</li>
+
+            <li><strong>Tools:</strong> Docker, Tenderly </li>
+
+            <li><strong>Frameworks:</strong> Tokio, Openzeppelin , Uniswap </li>
+
+            <li><strong>Version Control:</strong> Git, GitHub</li>
+
+            <li><strong>CI/CD:</strong> Jenkins </li>
+
+            <li><strong>E2E:</strong> Foundry, Cyprus, Playwright, HardHat, Alchemy, Truffle </li>
+            
+        </ul>
+
+        <h2 id="projects">Projects</h2>
+        <ul>
+            <li>
+                <a href="https://github.com/Shiv2576/VRF_TileGame" target="_blank" rel="noopener noreferrer" class="font-bold hover:underline">
+                  BlockReveal
+                </a>:  
+                <ul class="ml-4 list-disc">
+                  <li>Frontend: Next.js, Tailwind CSS, Wagmi, RainbowKit</li>
+                  <li>Chainlink VRF for randomness</li>
+                  <li>Integrating Chainlink Upkeep</li>
+                  <li>
+                    Upgraded contracts: 
+                    <a href="https://github.com/Shiv2576/TileGame_upgrade" target="_blank" rel="noopener noreferrer" class="underline">
+                      TileGame_upgrade
+                    </a>
+                  </li>
+                  <li>Features: Auto storage cleanup, support for concurrent players</li>
+                  <li>Challenge: High LINK token cost per round </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="https://github.com/Shiv2576/Staking_Contract" target="_blank" rel="noopener noreferrer" class="font-bold hover:underline">
+                  RestakingEth_Contract
+                </a>:  
+                <ul class="ml-4 list-disc">
+                  <li>Simple implementation of a restaking protocol</li>
+                  <li>Supports multiplier-based rewards</li>
+                  <li>Includes user liquidation mechanism</li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="https://airdroptoken.netlify.app/" target="_blank" rel="noopener noreferrer" class="font-bold hover:underline">
+                  TeleGram_Bot
+                </a>:
+                <ul class="ml-4 list-disc">
+                  <li>Event-driven trading bot integrated with Telegram</li>
+                  <li>Monitors whale transactions from mempool.space in real-time</li>
+                  <li>Predicts ETH & SOL price impact</li>
+                  <li>Signals potential long/short opportunities</li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="https://airdroptoken.netlify.app/" target="_blank" rel="noopener noreferrer" class="font-bold hover:underline">
+                  AirDropToken
+                </a>:
+                <ul class="ml-4 list-disc">
+                  <li>Simple multi-address token distribution (airdrop) app</li>
+                  <li>Built with Next.js, Tailwind CSS, Wagmi, and RainbowKit</li>
+                  <li>Tested end-to-end using Cypress, Playwright, and Vitest</li>
+                </ul>
+            </li>
+              
+              
+
+            <li>
+                <a href="https://extoken.netlify.app/" target="_blank" rel="noopener noreferrer" class="font-bold hover:underline">
+                  Swap-Token
+                </a>:
+                <ul class="ml-4 list-disc">
+                  <li>Simple token swap application with affiliate fee structure</li>
+                  <li>Built using Next.js, Tailwind CSS, Wagmi, and RainbowKit</li>
+                </ul>
+            </li>
+
+
+            <li>
+                Currently exploring MEV (Maximal Extractable Value) — learning how on-chain order flow, arbitrage, and block structuring impact DeFi trading.
+            </li>
+              
+        </ul>
+        
+
+        
+
+        <footer>
+            <p><small>Hosted on GitHub Pages — Theme by <a href="" >orderedlist</a></small></p>
+        </footer>
+    </div>
+    <script>
+        // Dark mode toggle functionality
+        const darkModeToggle = document.querySelector('.dark-mode-toggle');
+        
+        // Check for saved dark mode preference or system preference
+        const savedDarkMode = localStorage.getItem('darkMode');
+        const systemPrefersDarkMode = window.matchMedia('(prefers-color-scheme: )').matches;
+        
+        if (savedDarkMode === 'enabled' || (!savedDarkMode && systemPrefersDarkMode)) {
+            document.body.classList.add('dark-mode');
+        }
+        
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            // Save preference
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.removeItem('darkMode');
+            }
+        });
+        
+        // Listen for system dark mode changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (e.matches) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.removeItem('darkMode');
+            }
+        });
+    </script>
+</body>
+</html>
