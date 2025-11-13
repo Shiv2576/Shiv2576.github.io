@@ -3,658 +3,464 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Portfolio</title>
+        <title>Shivang Dixit</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@300;400;500;600&display=swap"
+            rel="stylesheet"
+        />
         <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: "Fira Code", "Courier New", monospace;
+            :root {
+                /* Dark mode (default) */
+                --bg-dark: #0f0f0f;
+                --text-dark: #f0f0f0;
+                --accent-bg-dark: #0a3d3d;
+                --link-border-dark: #555;
+                --link-hover-dark: #1a1a1a;
+
+                /* Light mode */
+                --bg-light: #fdfdfd;
+                --text-light: #1a1a1a;
+                --accent-bg-light: #c9f0f0;
+                --link-border-light: #ccc;
+                --link-hover-light: #f0f0f0;
+            }
+
+            /* Desktop: non-scrollable */
+            html,
+            body {
+                overflow: hidden;
+                height: 100%;
+                width: 100%;
             }
 
             body {
-                background-color: #282c34;
-                color: #abb2bf;
-                height: 100vh;
-                overflow: hidden;
+                background-color: var(--bg-dark);
+                color: var(--text-dark);
+                font-family: "Chivo Mono", "Courier New", monospace;
+                font-size: 18px;
+                line-height: 1.55;
+                margin: 0;
+                padding: 0;
                 display: flex;
-                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                padding-top: 5vh;
+                transition:
+                    background-color 0.4s,
+                    color 0.4s;
             }
 
-            /* Status Bar */
-            .status-bar {
-                background-color: #3e4451;
-                color: #98c379;
-                padding: 4px 8px;
-                font-size: 14px;
-                display: flex;
-                justify-content: space-between;
-                border-bottom: 1px solid #5c6370;
+            body.light-mode {
+                background-color: var(--bg-light);
+                color: var(--text-light);
             }
 
-            /* Main Content with ~ Gutter */
-            .content-wrapper {
-                flex: 1;
-                display: flex;
-                overflow: hidden;
-            }
-
-            .vim-gutter {
-                width: 40px;
-                background-color: #282c34;
-                color: #5c6370;
+            .portfolio-content {
+                max-width: 700px;
+                width: 90%;
                 text-align: center;
-                padding: 20px 0;
-                font-size: 14px;
-                line-height: 1.6;
-                user-select: none;
-            }
-
-            .content {
-                flex: 1;
-                padding: 20px;
-                overflow-y: auto;
-                line-height: 1.6;
-                background-color: #282c34;
-            }
-
-            /* Command Line */
-            .command-line {
-                background-color: #21252b;
-                padding: 8px 12px;
-                display: flex;
-                align-items: center;
-                border-top: 1px solid #5c6370;
-            }
-
-            .prompt {
-                color: #61afef;
-                margin-right: 8px;
-            }
-
-            .command-input {
-                background: transparent;
-                border: none;
-                color: #e06c75;
-                font-size: 16px;
-                width: 100%;
-                outline: none;
-                font-family: "Fira Code", "Courier New", monospace;
-            }
-
-            .command-input::placeholder {
-                color: #5c6370;
-            }
-
-            /* Vim-like Elements */
-            h1,
-            h2,
-            h3 {
-                color: #61afef;
-                margin-bottom: 16px;
+                position: relative;
             }
 
             h1 {
+                font-weight: 600;
                 font-size: 2.5rem;
-                border-bottom: 1px solid #5c6370;
-                padding-bottom: 10px;
-                margin-top: 0;
+                margin-bottom: 1.25rem;
+                letter-spacing: -0.02em;
             }
 
-            p {
-                margin-bottom: 16px;
-            }
-
-            .section {
-                margin-bottom: 30px;
-            }
-
-            .highlight {
-                color: #d9b48f;
-                background-color: rgba(229, 192, 123, 0.1);
-                padding: 2px 4px;
-                border-radius: 3px;
-            }
-
-            .platform {
-                color: #7bafd4;
-                background-color: rgba(97, 175, 239, 0.1);
-                padding: 2px 4px;
-                border-radius: 3px;
+            .rotating-line {
                 font-weight: 500;
+                margin: 1.5rem 0 1.25rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.625rem;
+                white-space: nowrap;
             }
 
-            .cursor {
+            .width-measure {
+                position: absolute;
+                visibility: hidden;
+                white-space: nowrap;
+                font-weight: 500;
+                font-family: "Chivo Mono", "Courier New", monospace;
+                font-size: 18px;
+            }
+
+            .rotating-text-container {
                 display: inline-block;
-                width: 8px;
-                height: 35px;
-                background-color: #e06c75;
-                animation: blink 1s infinite;
-                vertical-align: middle;
-                margin-left: 14px;
-                margin-bottom: 10px;
+                padding: 0.375rem 0.75rem;
+                border-radius: 0.5rem;
+                white-space: nowrap;
+                overflow: hidden;
+                transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+                background-color: var(--accent-bg-dark);
             }
 
-            @keyframes blink {
-                0%,
-                100% {
+            body.light-mode .rotating-text-container {
+                background-color: var(--accent-bg-light);
+            }
+
+            .char {
+                display: inline-block;
+                opacity: 0;
+                transform: translateY(100%);
+            }
+
+            .char.animate-in {
+                animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.1)
+                    forwards;
+            }
+
+            .char.animate-out {
+                animation: slideDown 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.1)
+                    forwards;
+            }
+
+            @keyframes slideUp {
+                to {
+                    transform: translateY(0);
                     opacity: 1;
                 }
-                50% {
+            }
+
+            @keyframes slideDown {
+                to {
+                    transform: translateY(-120%);
                     opacity: 0;
                 }
             }
 
-            /* Project Cards */
-            .projects {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                gap: 20px;
-                margin-top: 20px;
+            .bio {
+                margin: 1.75rem 0;
+                opacity: 0.85;
             }
 
-            .project-card {
-                background-color: #2c313a;
-                border: 1px solid #5c6370;
-                border-radius: 4px;
-                padding: 16px;
-                transition: all 0.3s ease;
+            .experience {
+                margin: 1.75rem 0;
+                font-size: 18px;
+                line-height: 1.6;
+                color: var(--text-dark);
+                opacity: 0.9;
             }
 
-            .project-card:hover {
-                border-color: #61afef;
-                transform: translateY(-3px);
+            body.light-mode .experience {
+                color: var(--text-light);
             }
 
-            .project-title {
-                color: #c678dd;
-                margin-bottom: 8px;
+            .highlight {
+                background-color: var(--accent-bg-dark);
+                padding: 0 0.35rem;
+                border-radius: 0.25rem;
+                font-weight: 500;
             }
 
-            /* Skills */
-            .skills {
+            body.light-mode .highlight {
+                background-color: var(--accent-bg-light);
+            }
+
+            .gif-container {
+                margin: 2rem 0;
                 display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                margin-top: 15px;
+                justify-content: center;
             }
 
-            .skill {
-                background-color: #3e4451;
-                padding: 6px 12px;
-                border-radius: 16px;
-                font-size: 14px;
+            .portfolio-gif {
+                max-width: 100%;
+                height: auto;
+                border-radius: 0.5rem;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             }
 
-            /* Footer */
-            .footer {
-                text-align: center;
-                margin-top: 30px;
-                color: #5c6370;
-                font-size: 14px;
-                line-height: 1.4;
+            body.light-mode .portfolio-gif {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             }
 
-            /* Error Popup */
-            #errorPopup {
+            body:not(.light-mode) .portfolio-gif {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            }
+
+            .links {
+                margin-top: 1.5rem;
+            }
+
+            .links a {
+                display: inline-block;
+                margin: 0.2rem 0.35rem;
+                padding: 0.25rem 0.75rem;
+                text-decoration: none;
+                border: 1px solid;
+                border-color: var(--link-border-dark);
+                border-radius: 0.25rem;
+                color: inherit;
+                font-weight: 500;
+                font-size: 15px;
+                line-height: 1;
+                transition: background 0.15s;
+            }
+
+            body.light-mode .links a {
+                border-color: var(--link-border-light);
+            }
+
+            .links a:hover {
+                background: var(--link-hover-dark);
+            }
+
+            body.light-mode .links a:hover {
+                background: var(--link-hover-light);
+            }
+
+            /* Dark mode toggle */
+            .mode-toggle {
                 position: fixed;
-                bottom: 70px;
-                left: 50%;
-                transform: translateX(-50%);
-                background-color: #2c313a;
-                border: 1px solid #e06c75;
-                color: #e06c75;
-                padding: 10px 20px;
-                border-radius: 4px;
+                top: 1.5rem;
+                right: 1.5rem;
+                background: transparent;
+                border: 1px solid currentColor;
+                color: inherit;
+                padding: 0.4rem 0.8rem;
+                font-family: inherit;
                 font-size: 14px;
-                z-index: 1000;
-                opacity: 0;
-                pointer-events: none;
-                transition: opacity 0.2s;
+                cursor: pointer;
+                z-index: 10;
+                border-radius: 0.25rem;
             }
 
-            #errorPopup.show {
-                opacity: 1;
-                pointer-events: auto;
-            }
-
-            /* Scrollbar */
-            ::-webkit-scrollbar {
-                width: 8px;
-            }
-
-            ::-webkit-scrollbar-track {
-                background: #21252b;
-            }
-
-            ::-webkit-scrollbar-thumb {
-                background: #5c6370;
-                border-radius: 4px;
-            }
-
-            ::-webkit-scrollbar-thumb:hover {
-                background: #61afef;
-            }
-
-            /* Responsive */
-            @media (max-width: 768px) {
-                .vim-gutter {
-                    display: none;
+            /* ===== MOBILE: SHRINK EVERYTHING ===== */
+            @media (max-width: 640px) {
+                /* Smaller base size */
+                body {
+                    font-size: 14px;
+                    line-height: 1.5;
+                    padding-top: 6vh;
                 }
-                .projects {
-                    grid-template-columns: 1fr;
-                }
+
                 h1 {
-                    font-size: 2rem;
+                    font-size: 1.9rem;
+                    margin-bottom: 1rem;
                 }
-                h2 {
-                    font-size: 1.5rem;
+
+                .rotating-line {
+                    margin: 1.1rem 0 1rem;
+                    font-size: 0.95rem;
                 }
-                #errorPopup {
-                    bottom: 60px;
-                    width: 90%;
-                    transform: translateX(-50%);
+
+                .rotating-text-container {
+                    padding: 0.25rem 0.6rem;
+                    border-radius: 0.4rem;
+                }
+
+                .bio,
+                .experience {
+                    margin: 1.25rem 0;
+                    font-size: 14px;
+                }
+
+                .highlight {
+                    padding: 0 0.3rem;
+                    border-radius: 0.2rem;
+                }
+
+                .gif-container {
+                    margin: 1.4rem 0;
+                }
+
+                .portfolio-gif {
+                    max-width: 90%; /* Prevent edge overflow */
+                    border-radius: 0.4rem;
+                    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+                }
+
+                .links {
+                    margin-top: 1.2rem;
+                }
+
+                .links a {
+                    margin: 0.15rem 0.3rem;
+                    padding: 0.2rem 0.65rem;
+                    font-size: 13px;
+                    border-radius: 0.2rem;
+                }
+
+                /* Smaller toggle */
+                .mode-toggle {
+                    top: 0.9rem;
+                    right: 0.9rem;
+                    padding: 0.28rem 0.55rem;
+                    font-size: 12px;
+                    border-radius: 0.18rem;
+                }
+            }
+
+            /* Mobile: enable scrolling */
+            @media (max-width: 768px) {
+                html,
+                body {
+                    overflow: auto;
+                    height: auto;
+                    min-height: 100vh;
+                }
+
+                body {
+                    align-items: flex-start;
+                    justify-content: flex-start;
+                }
+            }
+
+            /* Short desktop */
+            @media (max-height: 600px) and (min-width: 769px) {
+                body {
+                    padding-top: 15vh;
                 }
             }
         </style>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
-            rel="stylesheet"
-        />
     </head>
     <body>
-        <!-- Status Bar -->
-        <div class="status-bar">
-            <span>~/.portfolio/.vimrc</span>
-            <span class="position-info"
-                >1,1<span class="relative"> Top</span></span
-            >
-        </div>
+        <button class="mode-toggle" id="modeToggle">Light Mode</button>
 
-        <!-- Main Content with ~ Gutter -->
-        <div class="content-wrapper">
-            <div class="vim-gutter" id="vimGutter"></div>
-            <div class="content" id="contentArea">
-                <h1>Shivang Dixit</h1>
+        <div class="portfolio-content">
+            <h1>Shivang Dixit</h1>
 
-                <p>Go-Microservices | Web3 | Perp-Trading | Liquidity-Managing</p>
+            <div class="rotating-line">
+                Proficient in
+                <span class="rotating-text-container" id="rotatingText"></span>
+            </div>
 
-                <div class="section">
-                    <h2>About Me</h2>
-                    <p>
-                        Focus more on
-                        <span class="highlight">User-Workflows</span>.
-                    </p>
-                    <p>
-                        I try to stay flexible with different programming
-                        languages, but what I really focus on is understanding
-                        the workflows and how things fit together. For me, it’s
-                        less about sticking to one stack and more about learning
-                        the logic behind it, so I can adapt quickly and solve
-                        problems in the best way possible.
-                    </p>
-                </div>
+            <div class="width-measure" id="widthMeasure"></div>
 
-                <div class="section">
-                    <h2>Skills</h2>
-                    <div class="skills">
-                        <span class="skill">Golang</span>
-                        <span class="skill">Solidity</span>
-                        <span class="skill">TypeScript</span>
-                        <span class="skill">React</span>
-                        <span class="skill">Python</span>
-                        <span class="skill">Docker</span>
-                        <span class="skill">Kafka</span>
-                        <span class="skill">Jenkins</span>
-                        <span class="skill">Websockets</span>
-                        <span class="skill">GraphQL</span>
-                        <span class="skill">Postgres</span>
-                        <span class="skill">Foundry</span>
-                        <span class="skill">Ai-Agents</span>
-                        <span class="skill">OrderBooks</span>
-                        <span class="skill">Chainlink</span>
-                        <span class="skill">Git</span>
-                        <span class="skill">Swift</span>
-                        <span class="skill">SwiftUI</span>
-                    </div>
-                </div>
+            <p class="bio">Web-Dev | iOS | Go-Microservices</p>
 
-                <div class="section">
-                    <h2>Experience</h2>
-                    <p>
-                        <strong>Telegram Mini-Apps</strong> –
-                        <span class="platform">TON Blockchain</span><br />
-                        <em>Present</em><br />
-                        Built user-engagments mini games for on TON BlockChain,
-                        and Telegram Bots for market signals. A Project set to realease in 2026.
-                    </p>
-                    <p style="margin-top: 16px">
-                        <strong>FellowShip</strong> –
-                        <span class="platform">ChainLink Oracle - Cyfrin</span
-                        ><br />
-                        <em>July - Aug 2025</em><br />
-                        Learned About Blockchain & Crypto basic How oracles
-                        works , On-chain Automation ,ChainLink Vrf ,CCIP ,Data Feeds etc.
-                    </p>
-                </div>
+            <div class="experience">
+                <p>
+                    <span class="highlight">Senior Engineer</span> @ Protocol
+                    Labs (2023–Present)
+                </p>
+                <p>
+                    <span class="highlight">iOS Lead</span> @ FinTech Startup
+                    (2021–2023)
+                </p>
+            </div>
 
-                <div class="section">
-                    <h2>Projects</h2>
-                    <div class="projects">
-                        <div class="project-card">
-                            <div class="project-title">
-                                Go-Kafka Tutorial
-                                <a
-                                    href="gokafka.html"
-                                    target="_blank"
-                                    rel="noopener"
-                                    class="github-link"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="16"
-                                        height="16"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        style="color: #61afef"
-                                    >
-                                        <path
-                                            d="M10 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"
-                                        ></path>
-                                        <path d="M15 3h6v6"></path>
-                                        <path d="M21 3 9 15"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            <p>
-                                This repo contains Go+kafka project from beginners to Production Level
-                                environments like Uber, cloudflare and HyperLiquid(web3).
-                            </p>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-title">
-                                Twap/Spot_Oracle
-                                <a
-                                    href="twap.html"
-                                    target="_blank"
-                                    rel="noopener"
-                                    class="github-link"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="16"
-                                        height="16"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        style="color: #61afef"
-                                    >
-                                        <path
-                                            d="M10 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"
-                                        ></path>
-                                        <path d="M15 3h6v6"></path>
-                                        <path d="M21 3 9 15"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            <p>
-                                Fetches real-time Spot Prices from multiple
-                                Uniswap V3 liquidity pools.
-                            </p>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-title">
-                                Telegram_SignalBot
-                                <a
-                                    href="https://github.com/Shiv2576/Telegram_SignalBot"
-                                    target="_blank"
-                                    rel="noopener"
-                                    class="github-link"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="16"
-                                        height="16"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        style="color: #61afef"
-                                    >
-                                        <path
-                                            d="M10 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"
-                                        ></path>
-                                        <path d="M15 3h6v6"></path>
-                                        <path d="M21 3 9 15"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            <p>
-                                Monitors Bitcoin for Whale txns to predict price
-                                impact on ETH & SOL.
-                            </p>
-                        </div>
-                        <div class="project-card">
-                            <div class="project-title">
-                                Disperz
-                                <a
-                                    href="https://disperz.netlify.app/"
-                                    target="_blank"
-                                    rel="noopener"
-                                    class="github-link"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="16"
-                                        height="16"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        style="color: #61afef"
-                                    >
-                                        <path
-                                            d="M10 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"
-                                        ></path>
-                                        <path d="M15 3h6v6"></path>
-                                        <path d="M21 3 9 15"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            <p>
-                                Disperz app that lets user send to multiple
-                                address different amount of tokens.
-                                (mobile view is still in progress).
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div class="links">
+                <a
+                    href="https://github.com/Shiv2576"
+                    target="_blank"
+                    rel="noopener"
+                    >GitHub</a
+                >
+                <a
+                    href="https://www.linkedin.com/in/shivang-dixit-0911b2326/"
+                    target="_blank"
+                    rel="noopener"
+                    >LinkedIn</a
+                >
+                <a href="mailto:dixitshiva12358@gmail.com">Email</a>
+                <a href="ShivangResume.pdf" target="_blank" rel="noopener"
+                    >Resume</a
+                >
+            </div>
 
-                <div class="section">
-                    <h2>Contact</h2>
-                    <p>
-                        Feel free to reach out via email:
-                        <span class="highlight">dixitshiva12358@gmail.com</span>
-                    </p>
-                </div>
-
-                <div class="footer">
-                    <p>
-                        Press <span class="highlight">:</span> to enter command
-                        mode
-                    </p>
-                    <p>
-                        Type commands like
-                        <span class="platform">Github</span>:
-                        <span class="highlight">gg</span>,
-                        <span class="platform">Twitter/X</span>:
-                        <span class="highlight">gx</span>,
-                        <span class="platform">Resume</span>:
-                        <span class="highlight">gr</span>,
-                        <span class="platform">Linkedin</span>:
-                        <span class="highlight">gl</span>,
-                        <span class="platform">Email</span>:
-                        <span class="highlight">ge</span>
-                    </p>
-                </div>
+            <div class="gif-container">
+                <img
+                    src="still.gif"
+                    alt="Project preview"
+                    class="portfolio-gif"
+                />
             </div>
         </div>
 
-        <!-- Command Line -->
-        <div class="command-line">
-            <span class="prompt"></span>
-            <input
-                type="text"
-                class="command-input"
-                id="commandInput"
-                placeholder="Type a command..."
-            />
-        </div>
-
-        <!-- Error Popup -->
-        <div id="errorPopup">E492: Not an editor command</div>
-
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const commandInput = document.getElementById("commandInput");
-                const content = document.getElementById("contentArea");
-                const vimGutter = document.getElementById("vimGutter");
-                const positionInfo = document.querySelector(".position-info");
-                const errorPopup = document.getElementById("errorPopup");
+            const btn = document.getElementById("modeToggle");
+            const body = document.body;
+            const saved = localStorage.getItem("theme");
+            if (saved === "light") {
+                body.classList.add("light-mode");
+                btn.textContent = "Dark Mode";
+            } else {
+                btn.textContent = "Light Mode";
+            }
 
-                // Generate ~ symbols
-                function updateGutter() {
-                    vimGutter.innerHTML = "";
-                    const contentHeight = content.scrollHeight;
-                    const viewportHeight = content.clientHeight;
-                    const lineHeight = 24;
-                    const contentLines = Math.ceil(contentHeight / lineHeight);
-                    const visibleLines = Math.ceil(viewportHeight / lineHeight);
-                    const totalLines = Math.max(
-                        visibleLines,
-                        contentLines + 10,
-                    );
-
-                    for (let i = 0; i < totalLines; i++) {
-                        const tilde = document.createElement("div");
-                        tilde.textContent = "~";
-                        vimGutter.appendChild(tilde);
-                    }
+            btn.addEventListener("click", () => {
+                if (body.classList.contains("light-mode")) {
+                    body.classList.remove("light-mode");
+                    btn.textContent = "Light Mode";
+                    localStorage.setItem("theme", "dark");
+                } else {
+                    body.classList.add("light-mode");
+                    btn.textContent = "Dark Mode";
+                    localStorage.setItem("theme", "light");
                 }
-
-                updateGutter();
-                content.addEventListener("scroll", updateGutter);
-                window.addEventListener("resize", updateGutter);
-                const observer = new MutationObserver(updateGutter);
-                observer.observe(content, { childList: true, subtree: true });
-
-                // Update position info
-                content.addEventListener("scroll", updatePositionInfo);
-                updatePositionInfo();
-
-                function updatePositionInfo() {
-                    const scrollTop = content.scrollTop;
-                    const clientHeight = content.clientHeight;
-                    const scrollHeight = content.scrollHeight;
-                    const lineHeight = 24;
-                    const currentLine = Math.floor(scrollTop / lineHeight) + 1;
-
-                    let posText = " Top";
-                    if (scrollTop + clientHeight >= scrollHeight - 5) {
-                        posText = " Bot";
-                    } else if (scrollTop > 0) {
-                        const pct = Math.round(
-                            (scrollTop / (scrollHeight - clientHeight)) * 100,
-                        );
-                        posText = ` ${pct}%`;
-                    }
-
-                    positionInfo.innerHTML = `${currentLine},1<span class="relative">${posText}</span>`;
-                }
-
-                // Show error popup
-                function showError() {
-                    errorPopup.classList.add("show");
-                    setTimeout(() => {
-                        errorPopup.classList.remove("show");
-                    }, 2000);
-                }
-
-                // Focus command input
-                commandInput.focus();
-
-                // Handle commands
-                commandInput.addEventListener("keypress", function (e) {
-                    if (e.key === "Enter") {
-                        const command = commandInput.value.trim().toLowerCase();
-                        commandInput.value = "";
-
-                        if (command === "q" || command === "quit") {
-                            alert("Goodbye! Thanks for visiting my portfolio.");
-                        } else if (command === ":about") {
-                            document
-                                .querySelector("h2")
-                                .scrollIntoView({ behavior: "smooth" });
-                        } else if (command === ":projects") {
-                            document
-                                .querySelectorAll("h2")[1]
-                                .scrollIntoView({ behavior: "smooth" });
-                        } else if (command === ":skills") {
-                            document
-                                .querySelectorAll("h2")[0]
-                                .scrollIntoView({ behavior: "smooth" });
-                        } else if (command === ":contact") {
-                            document
-                                .querySelectorAll("h2")[2]
-                                .scrollIntoView({ behavior: "smooth" });
-                        } else if (command === ":gg") {
-                            window.open(
-                                "https://github.com/Shiv2576",
-                                "_blank",
-                            );
-                        } else if (command === ":gx") {
-                            window.open(
-                                "https://twitter.com/Shiv_dixit2576",
-                                "_blank",
-                            );
-                        } else if (command === ":gr") {
-                            window.open("ShivangResume.pdf", "_blank");
-                        } else if (command === ":gl") {
-                            window.open(
-                                "https://www.linkedin.com/in/shivang-dixit-0911b2326",
-                                "_blank",
-                            );
-                        } else if (command === ":ge") {
-                            window.location.href =
-                                "mailto:dixitshiva12358@gmail.com";
-                        } else if (command !== "") {
-                            showError();
-                        }
-                    }
-                });
-
-                // Add cursor to title
-                const title = document.querySelector("h1");
-                title.innerHTML += '<span class="cursor"></span>';
-
-                // Focus on colon key
-                document.addEventListener("keydown", function (e) {
-                    if (e.key === ":") {
-                        commandInput.focus();
-                    }
-                });
             });
+
+            const config = {
+                texts: ["TypeScript", "Golang", "Swift"],
+                rotationInterval: 2200,
+                staggerDuration: 30,
+                staggerFrom: "last",
+            };
+
+            const container = document.getElementById("rotatingText");
+            const measureEl = document.getElementById("widthMeasure");
+            let currentIndex = 0;
+
+            function setMaxWidth() {
+                const longest = config.texts.reduce((a, b) =>
+                    a.length > b.length ? a : b,
+                );
+                measureEl.textContent = longest;
+                container.style.width = `${measureEl.offsetWidth}px`;
+            }
+
+            function renderText(text) {
+                container.innerHTML = "";
+                [...text].forEach((char) => {
+                    const span = document.createElement("span");
+                    span.className = "char";
+                    span.textContent = char;
+                    container.appendChild(span);
+                });
+            }
+
+            function animateChars(direction) {
+                const chars = container.querySelectorAll(".char");
+                const total = chars.length;
+                chars.forEach((c) =>
+                    c.classList.remove("animate-in", "animate-out"),
+                );
+                let indices = Array.from({ length: total }, (_, i) => i);
+                if (config.staggerFrom === "last") indices.reverse();
+                else if (config.staggerFrom === "center") {
+                    const center = Math.floor(total / 2);
+                    indices.sort(
+                        (a, b) => Math.abs(center - a) - Math.abs(center - b),
+                    );
+                }
+                indices.forEach((idx, delayIdx) => {
+                    setTimeout(() => {
+                        chars[idx].classList.add(
+                            direction === "in" ? "animate-in" : "animate-out",
+                        );
+                    }, delayIdx * config.staggerDuration);
+                });
+            }
+
+            function rotate() {
+                animateChars("out");
+                setTimeout(() => {
+                    currentIndex = (currentIndex + 1) % config.texts.length;
+                    renderText(config.texts[currentIndex]);
+                    animateChars("in");
+                }, 600);
+            }
+
+            setMaxWidth();
+            renderText(config.texts[0]);
+            animateChars("in");
+            setInterval(rotate, config.rotationInterval);
+            window.addEventListener("resize", setMaxWidth);
         </script>
     </body>
 </html>
+
